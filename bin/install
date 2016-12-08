@@ -1,0 +1,25 @@
+#!/usr/bin/env python
+
+import os
+import time
+
+
+os.popen('clear').read().strip()
+print "Starting install"
+print "Installing requirements"
+os.popen('apt-get install hostapd dnsmasq python-dev python-rpi.gpio').read().strip()
+print "Copying files"
+os.popen('cp /etc/network/interfaces /etc/network/NORMinterfaces').read().strip()
+os.popen('cp HOTinterfaces /etc/network/HOTinterfaces').read().strip()
+os.popen('cp BRIhostapd.conf /etc/hostapd/BRIhostapd.conf').read().strip()
+os.popen('cp hostapd.conf /etc/hostapd/hostapd.conf').read().strip()
+os.popen('cp /lib/systemd/system/ssh.socket /lib/systemd/system/NORMssh.socket').read().strip()
+os.popen('cp TUNssh.socket /lib/systemd/system/TUNssh.socket').read().strip()
+os.popen('cp /etc/ssh/sshd_config /etc/ssh/NORMsshd_config').read().strip()
+os.popen('cp TUNssh_config /etc/ssh/TUNsshd_config').read().strip()
+os.popen('clear').read().strip()
+print "Complete!"
+print "Steps to take:"
+print "Manually setup 'menu.py' for SSH by setting the variables"
+print "Setup your hotspot (both tunneling hotspot and bridged) using the hostapd file"
+print "END"
