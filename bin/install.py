@@ -20,7 +20,7 @@ import re
 os.popen('clear').read().strip()
 print "Starting install"
 choice = raw_input("Do you already have Re4son for your Pi? Y/N")
-if choice == "Y" or choice == "y" or choice == "YES" or choice == "yes" or choice == "Yes":
+if choice == "N" or choice == "n" or choice == "NO" or choice == "no" or choice == "No":
     print "Installing Re4son"
     print "NOTE: You will have to reboot and run this install again"
     print "NOTE: DO NOT REBOOT WHEN PROMPTED OR YOU WILL HAVE TO REPEAT IT"
@@ -37,13 +37,19 @@ if choice == "Y" or choice == "y" or choice == "YES" or choice == "yes" or choic
     print "The system will now reboot..."
     os.popen('reboot').read().strip()
 print "Installing requirements"
+print "[Step 1/5]"
 os.popen('apt-get install hostapd dnsmasq python-dev gcc python-pygame').read().strip()
+print "[Step 2/5]"
 os.popen('wget https://pypi.python.org/packages/source/R/RPi.GPIO/RPi.GPIO-0.5.11.tar.gz').read().strip()
+print "[Step 3/5]"
 os.popen('tar zxvf RPi.GPIO-0.5.11.tar.gz').read().strip()
+print "[Step 4/5]"
 os.popen('cd RPi.GPIO-0.5.11').read().strip()
 print "Starting RPIO setup"
+print "[Step 5/5]"
 os.popen('python setup.py install').read().strip()
-print "Setup:"
+print "Starting setup for menu:"
+os.popen('cd ../').read().strip()
 hotspot = raw_input("Hotspot name[MiPi]: ")
 password = raw_input("Hotspot password[Password11]: ")
 #Write to the hotspot file
