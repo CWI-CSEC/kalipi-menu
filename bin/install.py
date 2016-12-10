@@ -52,10 +52,9 @@ print "[Step 6/8]"
 os.popen('wget https://pypi.python.org/packages/source/R/RPi.GPIO/RPi.GPIO-0.5.11.tar.gz').read().strip()
 print "[Step 7/8]"
 os.popen('tar zxvf RPi.GPIO-0.5.11.tar.gz').read().strip()
-os.popen('cd RPi.GPIO-0.5.11').read().strip()
 print "Starting RPIO setup"
 print "[Step 8/8]"
-os.popen('python setup.py install').read().strip()
+os.popen('python RPi.GPIO-0.5.11/setup.py install').read().strip()
 print "Starting setup for menu:"
 os.popen('cd ..').read().strip()
 hotspot = raw_input("Hotspot name[MiPi]: ")
