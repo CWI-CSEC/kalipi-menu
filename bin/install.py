@@ -15,6 +15,7 @@
 
 import os
 import re
+import subprocess
 
 
 os.popen('clear').read().strip()
@@ -38,7 +39,7 @@ if choice == "N" or choice == "n" or choice == "NO" or choice == "no" or choice 
     os.popen('reboot').read().strip()
 print "Installing requirements"
 print "[Step 1/8]"
-os.popen('apt-get -y install hostapd').read().strip()
+subprocess.Popen('apt-get install -y hostapd', shell=True, stdin=None, stdout=open(os.devnull,"wb"), stderr=STDOUT, executable="/bin/bash")
 print "[Step 2/8]"
 os.popen('apt-get -y install dnsmasq').read().strip()
 print "[Step 3/8]"
@@ -62,8 +63,8 @@ password = raw_input("Hotspot password[Password11]: ")
 #Write to the hotspot file
 f = open('config/HOThostapd.conf', 'r')
 contents = f.read()
-contents = re.sub('ssid=[a-z]*[A-Z]*[0-9]*', 'ssid=%s'%hotspot, contents)
-contents = re.sub('wpa_passphrase=[a-z]*[A-Z]*[0-9]*', 'wpa_passphrase=%s'%password, contents)
+contents = re.sub('ssid=[a-z]{1,32}[A-Z]{1,32}[0-9]{1,32}/[$-/:-?{-~!"^_`\[\]]/{1,32}', 'ssid=%s'%hotspot, contents)
+contents = re.sub('wpa_passphrase=[a-z]{1,32}[A-Z]{1,32}[0-9]{1,32}/[$-/:-?{-~!"^_`\[\]]/{1,32}', 'wpa_passphrase=%s'%password, contents)
 f.close()
 f = open('config/HOThostapd.conf', 'w')
 f.write(contents)
@@ -71,8 +72,8 @@ f.close()
 #Write to the bridged hotspot file
 f = open('config/BRIhostapd.conf', 'r')
 contents = f.read()
-contents = re.sub('ssid=[a-z]*[A-Z]*[0-9]*/[$-/:-?{-~!"^_`\[\]]/*', 'ssid=%s'%hotspot, contents)
-contents = re.sub('wpa_passphrase=[a-z]*[A-Z]*[0-9]*/[$-/:-?{-~!"^_`\[\]]/*', 'wpa_passphrase=%s'%password, contents)
+contents = re.sub('ssid=[a-z]{1,32}[A-Z]{1,32}[0-9]{1,32}/[$-/:-?{-~!"^_`\[\]]/{1,32}', 'ssid=%s'%hotspot, contents)
+contents = re.sub('wpa_passphrase=[a-z]{1,32}[A-Z]{1,32}[0-9]{1,32}/[$-/:-?{-~!"^_`\[\]]/{1,32}', 'wpa_passphrase=%s'%password, contents)
 f.close()
 f = open('config/BRIhostapd.conf', 'w')
 f.write(contents)
