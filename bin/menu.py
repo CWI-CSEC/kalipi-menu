@@ -427,7 +427,7 @@ def update(option):
     return checker(option)
 
 def upstatus(status):
-    with open('status.txt','r') as rf: #Read the file and make changes
+    with open('/root/bin/status.txt','r') as rf: #Read the file and make changes
         contents = rf.read()
         if "bl=" in status:         #If it is a backlight update
             if "0" in status:
@@ -447,13 +447,13 @@ def upstatus(status):
             if "1" in status:
                 contents = re.sub('ssh=.', 'ssh=1', contents)
     #Write the update out to the file
-    with open('status.txt','w+') as wf:
+    with open('/root/bin/status.txt','w+') as wf:
         wf.write(contents)
     return 0
 
 
 def chkstatus(status):
-    with open('/root/sync/status.txt','r') as cf: #Read the file and make changes
+    with open('/root/bin/status.txt','r') as cf: #Read the file and make changes
         contents = cf.read()
         if status in contents:
             result = 1
