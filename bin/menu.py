@@ -453,8 +453,8 @@ def upstatus(status):
 
 
 def chkstatus(status):
-    with open('status.txt','r') as rf: #Read the file and make changes
-        contents = rf.read()
+    with open('/root/sync/status.txt','r') as cf: #Read the file and make changes
+        contents = cf.read()
         if status in contents:
             result = 1
         if status not in contents:
