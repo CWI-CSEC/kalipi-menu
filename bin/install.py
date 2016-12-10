@@ -19,7 +19,7 @@ import re
 
 os.popen('clear').read().strip()
 print "Starting install"
-choice = raw_input("Do you already have Re4son for your Pi? Y/N")
+choice = raw_input("Do you already have Re4son for your Pi? Y/N   ")
 if choice == "N" or choice == "n" or choice == "NO" or choice == "no" or choice == "No":
     print "Installing Re4son"
     print "NOTE: You will have to reboot and run this install again"
@@ -37,19 +37,26 @@ if choice == "N" or choice == "n" or choice == "NO" or choice == "no" or choice 
     print "The system will now reboot..."
     os.popen('reboot').read().strip()
 print "Installing requirements"
-print "[Step 1/5]"
-os.popen('apt-get install hostapd dnsmasq python-dev gcc python-pygame').read().strip()
-print "[Step 2/5]"
+print "[Step 1/8]"
+os.popen('apt-get -y install hostapd').read().strip()
+print "[Step 2/8]"
+os.popen('apt-get -y install dnsmasq').read().strip()
+print "[Step 3/8]"
+os.popen('apt-get -y install python-dev').read().strip()
+print "[Step 4/8]"
+os.popen('apt-get -y install hostapd gcc').read().strip()
+print "[Step 5/8]"
+os.popen('apt-get -y install python-pygame').read().strip()
+print "[Step 6/8]"
 os.popen('wget https://pypi.python.org/packages/source/R/RPi.GPIO/RPi.GPIO-0.5.11.tar.gz').read().strip()
-print "[Step 3/5]"
+print "[Step 7/8]"
 os.popen('tar zxvf RPi.GPIO-0.5.11.tar.gz').read().strip()
-print "[Step 4/5]"
 os.popen('cd RPi.GPIO-0.5.11').read().strip()
 print "Starting RPIO setup"
-print "[Step 5/5]"
+print "[Step 8/8]"
 os.popen('python setup.py install').read().strip()
 print "Starting setup for menu:"
-os.popen('cd ../').read().strip()
+os.popen('cd ..').read().strip()
 hotspot = raw_input("Hotspot name[MiPi]: ")
 password = raw_input("Hotspot password[Password11]: ")
 #Write to the hotspot file
