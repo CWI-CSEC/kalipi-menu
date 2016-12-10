@@ -13,6 +13,7 @@ import RPi.GPIO as GPIO
 import time
 import os
 import subprocess
+import re
 
 
 GPIO.setmode(GPIO.BCM)
@@ -56,6 +57,14 @@ MAX = "17"          #Number of options including EXIT                        #
 def main():
     option = 1 #Declare option variable
     update(option)
+    #TESTING CODE
+    time.sleep(0.25)
+    status = "backlight=1"
+    if chkstatus(status) == 0:
+        GPIO.output(27,GPIO.LOW)
+    if chkstatus(status) == 1:
+        GPIO.output(27,GPIO.HIGH)
+    #
     input_state5 = GPIO.input(5)
     while input_state5 == True:             #Do this until the X button is pressed
        input_state17 = GPIO.input(17)
@@ -100,10 +109,14 @@ def run(option):
     if option == 2:
     	#Turn screen on
     	GPIO.output(27,GPIO.HIGH)
+        status = "bl=1"
+        upstatus(status)
     	main()
     if option == 3:
     	#Turn screen off
     	GPIO.output(27,GPIO.LOW)
+        status = "bl=0"
+        upstatus(status)
     	main()
     if option == 4:
         #Disable GUI
@@ -179,8 +192,18 @@ def run(option):
       if input_state5 == False:
           print "Enabling next reboot"
           time.sleep(3)
+      status = "nw=NOR"
+      upstatus(status)
     if option == 11:
     	#Enable BRIDGED ADAPTOR over WLAN0
+        status = "network=HOT"
+        if chkstatus(status) == 1: #If its in hotspot mode, set it to normal first
+            os.popen('cp /etc/network/NORMinterfaces /etc/network/interfaces').read().strip()
+            os.popen('systemctl stop dnsmasq').read().strip()
+            os.popen('systemctl stop hostapd').read().strip()
+            os.popen('systemctl restart networking').read().strip()
+            os.popen('iwconfig wlan0 mode managed').read().strip()
+            os.popen('iwconfig wlan0 power on').read().strip()
     	print "Please wait..."
     	os.popen('cp /etc/hostapd/BRIhostapd.conf /etc/hostapd/hostapd.conf').read().strip()
     	os.popen('cp /etc/network/BRIinterfaces /etc/network/interfaces').read().strip()
@@ -202,6 +225,8 @@ def run(option):
     	if input_state5 == False:
             print "Enabling next reboot"
             time.sleep(3)
+        status = "nw=BRI"
+        upstatus(status)
     if option == 12:
         #Turns WLAN1 into a hotspot
     	print "Are you sure you want to convert WLAN1 to a hotspot?"
@@ -217,6 +242,14 @@ def run(option):
     	if input_state24 == False:
     		main()
     	if input_state5 == False:
+            status = "network=BRI"
+            if chkstatus(status) == 1: #If its in bridged mode, set it to normal first
+                os.popen('cp /etc/network/NORMinterfaces /etc/network/interfaces').read().strip()
+                os.popen('systemctl stop dnsmasq').read().strip()
+                os.popen('systemctl stop hostapd').read().strip()
+                os.popen('systemctl restart networking').read().strip()
+                os.popen('iwconfig wlan0 mode managed').read().strip()
+                os.popen('iwconfig wlan0 power on').read().strip()
     		os.popen('cp /etc/hostapd/HOThostapd.conf /etc/hostapd/hostapd.conf').read().strip()
     		os.popen('cp /etc/network/HOTinterfaces /etc/network/interfaces').read().strip()
     		os.popen('systemctl start hostapd').read().strip()
@@ -232,11 +265,15 @@ def run(option):
                     input_state24 = GPIO.input(24)
                     time.sleep(0.2)
                 if input_state24 == False:
+                    status = "nw=HOT"
+                    upstatus(status)
                     main()
                 if input_state5 == False:
         	    print "Enabling..."
             	    os.popen('systemctl enable hostapd').read().strip()
                     os.popen('systemctl enable dnsmasq').read().strip()
+                    status = "nw=HOT"
+                    upstatus(status)
         	    time.sleep(0.5)
     if option == 13:
     	#Disable Tunneling
@@ -388,6 +425,42 @@ def update(option):
     # selection(option) #Find what option they're currently on
     print "%s. %s" %(checker(option),selection(option)) #Show the user what they're selecting
     return checker(option)
+
+def upstatus(status):
+    with open('status.txt','r') as rf: #Read the file and make changes
+        contents = rf.read()
+        if "bl=" in status:         #If it is a backlight update
+            if "0" in status:
+                contents = re.sub('backlight=.', 'backlight=0', contents)
+            if "1" in status:
+                contents = re.sub('backlight=.', 'backlight=1', contents)
+        if "nw=" in status:         #If it is a network update
+            if "NOR" in status:
+                contents = re.sub('network=...', 'network=NOR', contents)
+            if "BRI" in status:
+                contents = re.sub('network=...', 'network=BRI', contents)
+            if "HOT" in status:
+                contents = re.sub('network=...', 'network=HOT', contents)
+        if "ssh=" in status:        #If it is a ssh update
+            if "0" in status:
+                contents = re.sub('ssh=.', 'ssh=0', contents)
+            if "1" in status:
+                contents = re.sub('ssh=.', 'ssh=1', contents)
+    #Write the update out to the file
+    with open('status.txt','w+') as wf:
+        wf.write(contents)
+    return 0
+
+
+def chkstatus(status):
+    with open('status.txt','r') as rf: #Read the file and make changes
+        contents = rf.read()
+        if status in contents:
+            result = 1
+        if status not in contents:
+            result = 0
+    return result
+
 
 #MAKES SURE ALL FUNCTIONS ARE DECLARED AND RETURNS TO THE TOP
 if __name__ == '__main__':
