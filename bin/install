@@ -25,22 +25,38 @@ if [[ $choice =~ ^[Nn]$ ]]; then
 fi
 echo "Skipping Re4son software..."
 echo "Installing requirements"
+echo "-------------"
 echo "[Step 1/8]"
+echo "-------------"
 apt-get -y install hostapd
+echo "-------------"
 echo "[Step 2/8]"
+echo "-------------"
 apt-get -y install dnsmasq
+echo "-------------"
 echo "[Step 3/8]"
+echo "-------------"
 apt-get -y install python-dev
+echo "-------------"
 echo "[Step 4/8]"
+echo "-------------"
 apt-get -y install hostapd gcc
+echo "-------------"
 echo "[Step 5/8]"
+echo "-------------"
 apt-get -y install python-pygame
+echo "-------------"
 echo "[Step 6/8]"
+echo "-------------"
 wget https://pypi.python.org/packages/source/R/RPi.GPIO/RPi.GPIO-0.5.11.tar.gz
+echo "-------------"
 echo "[Step 7/8]"
+echo "-------------"
 tar zxvf RPi.GPIO-0.5.11.tar.gz
+echo "-------------"
 echo "Starting RPIO setup"
 echo "[Step 8/8]"
+echo "-------------"
 cd RPi.GPIO-0.5.11/
 python setup.py install
 echo "Starting setup for menu:"
@@ -68,7 +84,7 @@ cp -i /lib/systemd/system/ssh.socket /lib/systemd/system/NORMssh.socket
 cp -i config/TUNssh.socket /lib/systemd/system/TUNssh.socket
 cp -i /etc/ssh/sshd_config /etc/ssh/NORMsshd_config
 cp -i config/TUNsshd_config /etc/ssh/TUNsshd_config
-clear
+echo "-------------"
 echo "Complete!"
 echo "Steps to take: Manually setup 'menu.py' for SSH by setting the variables"
 echo "Setup your hotspot (both tunneling hotspot and bridged) using the hostapd file"
@@ -76,3 +92,4 @@ echo "FINAL STEP: Run these commands if there were any failures:"
 echo "cd RPi.GPIO-0.5.11"
 echo "python setup.py install"
 echo "END"
+echo "-------------"

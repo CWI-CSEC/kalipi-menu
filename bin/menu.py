@@ -26,6 +26,10 @@ GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_UP) #Triangle
 GPIO.setup(22, GPIO.IN, pull_up_down=GPIO.PUD_UP) #SQUARE
 GPIO.setup(27, GPIO.OUT)			  #Backlight
 
+abspath = os.path.abspath(__file__) #Makes the script find where its located so it can use relative paths
+dname = os.path.dirname(abspath)
+os.chdir(dname)
+
 global sshUSER
 global sshIP
 global sshPORT
@@ -250,31 +254,34 @@ def run(option):
                 os.popen('systemctl restart networking').read().strip()
                 os.popen('iwconfig wlan0 mode managed').read().strip()
                 os.popen('iwconfig wlan0 power on').read().strip()
-    		os.popen('cp /etc/hostapd/HOThostapd.conf /etc/hostapd/hostapd.conf').read().strip()
-    		os.popen('cp /etc/network/HOTinterfaces /etc/network/interfaces').read().strip()
-    		os.popen('systemctl start hostapd').read().strip()
-    		os.popen('systemctl start dnsmasq').read().strip()
-        	print "Would you like to enable this mode at startup?"
-        	print "X: YES"
-                print "Triangle: NO"
-                time.sleep(0.5)
+	    print "Enabling..."
+#	    os.popen('ifconfig wlan1 down').read().strip()
+            os.popen('cp /etc/hostapd/HOThostapd.conf /etc/hostapd/hostapd.conf').read().strip()
+       	    os.popen('cp /etc/network/HOTinterfaces /etc/network/interfaces').read().strip()
+#	    os.popen('ifconfig wlan1 up').read().strip()
+            os.popen('systemctl start hostapd').read().strip()
+    	    os.popen('systemctl start dnsmasq').read().strip()
+            print "Would you like to enable this mode at startup?"
+       	    print "X: YES"
+            print "Triangle: NO"
+            time.sleep(0.5)
+            input_state5 = GPIO.input(5)
+            input_state24 = GPIO.input(24)
+            while input_state5 == True and input_state24 == True:
                 input_state5 = GPIO.input(5)
                 input_state24 = GPIO.input(24)
-                while input_state5 == True and input_state24 == True:
-                    input_state5 = GPIO.input(5)
-                    input_state24 = GPIO.input(24)
-                    time.sleep(0.2)
-                if input_state24 == False:
-                    status = "nw=HOT"
-                    upstatus(status)
-                    main()
-                if input_state5 == False:
-        	    print "Enabling..."
-            	    os.popen('systemctl enable hostapd').read().strip()
-                    os.popen('systemctl enable dnsmasq').read().strip()
-                    status = "nw=HOT"
-                    upstatus(status)
-        	    time.sleep(0.5)
+                time.sleep(0.2)
+            if input_state24 == False:
+                status = "nw=HOT"
+                upstatus(status)
+                main()
+            if input_state5 == False:
+           	print "Enabling..."
+                os.popen('systemctl enable hostapd').read().strip()
+                os.popen('systemctl enable dnsmasq').read().strip()
+                status = "nw=HOT"
+                upstatus(status)
+   	    time.sleep(0.5)
     if option == 13:
     	#Disable Tunneling
     	os.popen('cp /etc/ssh/NORMsshd_config /etc/ssh/sshd_config').read().strip()
@@ -427,7 +434,7 @@ def update(option):
     return checker(option)
 
 def upstatus(status):
-    with open('/root/sync/bin/status.txt','r') as rf: #Read the file and make changes
+    with open('status.txt','r') as rf: #Read the file and make changes
         contents = rf.read()
         if "bl=" in status:         #If it is a backlight update
             if "0" in status:
@@ -447,13 +454,13 @@ def upstatus(status):
             if "1" in status:
                 contents = re.sub('ssh=.', 'ssh=1', contents)
     #Write the update out to the file
-    with open('/root/sync/bin/status.txt','w+') as wf:
+    with open('status.txt','w+') as wf:
         wf.write(contents)
     return 0
 
 
 def chkstatus(status):
-    with open('/root/sync/bin/status.txt','r') as cf: #Read the file and make changes
+    with open('status.txt','r') as cf: #Read the file and make changes
         contents = cf.read()
         if status in contents:
             result = 1
