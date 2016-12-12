@@ -19,8 +19,9 @@ if [[ $choice =~ ^[Nn]$ ]]; then
   ./install.sh
   ./re4son-pi-tft-setup -d
   ./re4son-pi-tft-setup -t 22 -u /root
-  echo "The system will now reboot..."
-  sleep 2
+  echo "The Re4son install is complete"
+  echo "After the reboot, start the installer again"
+  sleep 5
   reboot
 fi
 echo "Skipping Re4son software..."
