@@ -21,6 +21,7 @@ if [[ $choice =~ ^[Nn]$ ]]; then
   ./re4son-pi-tft-setup -t 22 -u /root
   echo "The system will now reboot..."
   sleep 2
+  reboot
 fi
 echo "Skipping Re4son software..."
 echo "Installing requirements"
@@ -40,10 +41,10 @@ echo "[Step 7/8]"
 tar zxvf RPi.GPIO-0.5.11.tar.gz
 echo "Starting RPIO setup"
 echo "[Step 8/8]"
-os.chdir('/root/bin/kalipi-menu/bin/RPi.GPIO-0.5.11/')
+cd RPi.GPIO-0.5.11/
 python setup.py install
 echo "Starting setup for menu:"
-cd /root/bin/kalipi-menu/bin/
+cd ..
 rm -rf RPi.GPIO-0.5.11.tar.gz #Delete the zipped package
 echo -n "Hotspot name[MiPi]: "
 read hotspot
