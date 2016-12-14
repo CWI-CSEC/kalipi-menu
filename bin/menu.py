@@ -45,15 +45,10 @@ piPORT = "22"       #Port that you've opened on the Pi (Default:22)          #
 sshUSER = "root"    #Username at destination (Default:root)                  #
 sshIP = ""          #IP address of desination                                #
 sshPORT = "22"      #Desination port (Default:22)                            #
-#-----------------------------------------------------                       #
-#Only change this one if you have need of more/less options (Default:17)     #
-MAX = "17"          #Number of options including EXIT                        #
+#----------------------------------------------------------------------------#
+#ONLY CHANGE THIS IF YOU ARE ADDING OR SUBTRACTING OPTIONS                   #
+MAX = 17        #Number of options including "EXIT" (Default:17)             #
 ##############################################################################
-
-
-
-
-
 
 
 
@@ -68,7 +63,6 @@ def main():
         GPIO.output(27,GPIO.LOW)
     if chkstatus(status) == 1:
         GPIO.output(27,GPIO.HIGH)
-    #
     input_state5 = GPIO.input(5)
     while input_state5 == True:             #Do this until the X button is pressed
        input_state17 = GPIO.input(17)
@@ -84,6 +78,10 @@ def main():
        time.sleep(0.25)
     run(option) #Do whatever was selected
     main() #Returns to the menu when they're done
+
+
+
+
 
 #FOR DISPLAYING THE REQUESTED INFORMATION
 def run(option):
@@ -125,7 +123,7 @@ def run(option):
     if option == 4:
         #Disable GUI
         print "Disabling GUI"
-        os.popen("echo 'N' | /usr/local/src/re4son_kali-pi-tft_kernel_4.1.21-20160822/re4son-pi-tft-setup -b cli").read().strip()
+        os.popen("echo 'N' | /usr/local/src/re4son_kali-pi-tft_kernel_4*/re4son-pi-tft-setup -b cli").read().strip()
         print "X: Later"
         print "TRIANGLE: Reboot"
         input_state5 = GPIO.input(5)
@@ -144,7 +142,7 @@ def run(option):
     if option == 5:
         #Enable GUI
         print "Enabling GUI"
-        os.popen("echo 'N' | /usr/local/src/re4son_kali-pi-tft_kernel_4.1.21-20160822/re4son-pi-tft-setup -b gui").read().strip()
+        os.popen("echo 'N' | /usr/local/src/re4son_kali-pi-tft_kernel_4*/re4son-pi-tft-setup -b gui").read().strip()
         print "X: Later"
         print "TRIANGLE: Reboot"
         input_state5 = GPIO.input(5)
@@ -163,11 +161,11 @@ def run(option):
     if option == 6:
        #Enable Auto-login
        print "Enabling auto-login"
-       os.popen("echo 'N' | /usr/local/src/re4son_kali-pi-tft_kernel_4.1.21-20160822/re4son-pi-tft-setup -a root").read().strip()
+       os.popen("echo 'N' | /usr/local/src/re4son_kali-pi-tft_kernel_4*/re4son-pi-tft-setup -a root").read().strip()
     if option == 7:
        #Disable Auto-login
        print "Disabling auto-login"
-       os.popen("echo 'N' | /usr/local/src/re4son_kali-pi-tft_kernel_4.1.21-20160822/re4son-pi-tft-setup -a disable").read().strip()
+       os.popen("echo 'N' | /usr/local/src/re4son_kali-pi-tft_kernel_4*/re4son-pi-tft-setup -a disable").read().strip()
     if option == 8:
 	  #Wifi Menu
 	  subprocess.call(['nmtui'])
@@ -409,9 +407,9 @@ def menu():
 def checker(option):
     optionCHK = option
     MIN = 1
-    if (option < MIN):
+    if (optionCHK < MIN):
     	optionCHK = MIN
-    if (option > MAX):
+    if (optionCHK > MAX):
     	optionCHK = MAX
     option = optionCHK
     return option
