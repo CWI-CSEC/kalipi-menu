@@ -45,15 +45,10 @@ piPORT = "22"       #Port that you've opened on the Pi (Default:22)          #
 sshUSER = "root"    #Username at destination (Default:root)                  #
 sshIP = ""          #IP address of desination                                #
 sshPORT = "22"      #Desination port (Default:22)                            #
-#-----------------------------------------------------                       #
-#Only change this one if you have need of more/less options (Default:17)     #
-MAX = "17"          #Number of options including EXIT                        #
+#----------------------------------------------------------------------------#
+#ONLY CHANGE THIS IF YOU ARE ADDING OR SUBTRACTING OPTIONS                   #
+MAX = 17        #Number of options including "EXIT" (Default:17)             #
 ##############################################################################
-
-
-
-
-
 
 
 
@@ -68,22 +63,27 @@ def main():
         GPIO.output(27,GPIO.LOW)
     if chkstatus(status) == 1:
         GPIO.output(27,GPIO.HIGH)
-    #
-    input_state5 = GPIO.input(5)
-    while input_state5 == True:             #Do this until the X button is pressed
+    input_state5 = GPIO.input(5) #Check X key
+    keyinput = os.popen("./keytest").read().strip() #Check arrow keys
+    while input_state5 == True or keyinput == '2':             #Do this until the X button is pressed or KEY_RIGHT_ARROW
        input_state17 = GPIO.input(17)
        input_state4 = GPIO.input(4)
        input_state5 = GPIO.input(5)
+       keyinput = os.popen("./keytest").read().strip() #Check arrow keys
        #Buttons are checked below
-       if input_state17 == False: #If UP pressed
+       if input_state17 == False or keyinput == '0': #If UP pressed or KEY_UP
           option -= 1
           option = update(option)
-       if input_state4 == False: #If DOWN pressed
+       if input_state4 == False or keyinput == '1': #If DOWN pressed or KEY_DOWN
           option += 1
           option = update(option)
-       time.sleep(0.25)
+       time.sleep(0.1)
     run(option) #Do whatever was selected
     main() #Returns to the menu when they're done
+
+
+
+
 
 #FOR DISPLAYING THE REQUESTED INFORMATION
 def run(option):
@@ -125,7 +125,7 @@ def run(option):
     if option == 4:
         #Disable GUI
         print "Disabling GUI"
-        os.popen("echo 'N' | /usr/local/src/re4son_kali-pi-tft_kernel_4.1.21-20160822/re4son-pi-tft-setup -b cli").read().strip()
+        os.popen("echo 'N' | /usr/local/src/re4son_kali-pi-tft_kernel_4*/re4son-pi-tft-setup -b cli").read().strip()
         print "X: Later"
         print "TRIANGLE: Reboot"
         input_state5 = GPIO.input(5)
@@ -144,7 +144,7 @@ def run(option):
     if option == 5:
         #Enable GUI
         print "Enabling GUI"
-        os.popen("echo 'N' | /usr/local/src/re4son_kali-pi-tft_kernel_4.1.21-20160822/re4son-pi-tft-setup -b gui").read().strip()
+        os.popen("echo 'N' | /usr/local/src/re4son_kali-pi-tft_kernel_4*/re4son-pi-tft-setup -b gui").read().strip()
         print "X: Later"
         print "TRIANGLE: Reboot"
         input_state5 = GPIO.input(5)
@@ -163,11 +163,11 @@ def run(option):
     if option == 6:
        #Enable Auto-login
        print "Enabling auto-login"
-       os.popen("echo 'N' | /usr/local/src/re4son_kali-pi-tft_kernel_4.1.21-20160822/re4son-pi-tft-setup -a root").read().strip()
+       os.popen("echo 'N' | /usr/local/src/re4son_kali-pi-tft_kernel_4*/re4son-pi-tft-setup -a root").read().strip()
     if option == 7:
        #Disable Auto-login
        print "Disabling auto-login"
-       os.popen("echo 'N' | /usr/local/src/re4son_kali-pi-tft_kernel_4.1.21-20160822/re4son-pi-tft-setup -a disable").read().strip()
+       os.popen("echo 'N' | /usr/local/src/re4son_kali-pi-tft_kernel_4*/re4son-pi-tft-setup -a disable").read().strip()
     if option == 8:
 	  #Wifi Menu
 	  subprocess.call(['nmtui'])
@@ -200,8 +200,8 @@ def run(option):
       upstatus(status)
     if option == 11:
     	#Enable BRIDGED ADAPTOR over WLAN0
-        status = "network=HOT"
-        if chkstatus(status) == 1: #If its in hotspot mode, set it to normal first
+        status = "network=NOR"
+        if chkstatus(status) == 0: #If its not in normal mode
             os.popen('cp /etc/network/NORMinterfaces /etc/network/interfaces').read().strip()
             os.popen('systemctl stop dnsmasq').read().strip()
             os.popen('systemctl stop hostapd').read().strip()
@@ -246,8 +246,8 @@ def run(option):
     	if input_state24 == False:
     		main()
     	if input_state5 == False:
-            status = "network=BRI"
-            if chkstatus(status) == 1: #If its in bridged mode, set it to normal first
+            status = "network=NOR"
+            if chkstatus(status) == 0: #If its not in normal mode
                 os.popen('cp /etc/network/NORMinterfaces /etc/network/interfaces').read().strip()
                 os.popen('systemctl stop dnsmasq').read().strip()
                 os.popen('systemctl stop hostapd').read().strip()
@@ -409,9 +409,9 @@ def menu():
 def checker(option):
     optionCHK = option
     MIN = 1
-    if (option < MIN):
+    if (optionCHK < MIN):
     	optionCHK = MIN
-    if (option > MAX):
+    if (optionCHK > MAX):
     	optionCHK = MAX
     option = optionCHK
     return option
