@@ -107,8 +107,10 @@ def run(option):
         print "---PRESS X TO RETURN---"
         time.sleep(0.5)
         input_state5 = GPIO.input(5)
-        while input_state5 == True:
+        keyinput = os.popen("./keytest").read().strip() #Check arrow keys
+        while input_state5 == True and keyinput != '2':             #Do this until the X button is pressed or KEY_RIGHT_ARROW
             input_state5 = GPIO.input(5)
+            keyinput = os.popen("./keytest").read().strip() #Check arrow keys
             time.sleep(0.2)
     if option == 2:
     	#Turn screen on
@@ -130,15 +132,17 @@ def run(option):
         print "TRIANGLE: Reboot"
         input_state5 = GPIO.input(5)
         input_state24 = GPIO.input(24)
-        while input_state5 == True and input_state24 == True:
+        keyinput = os.popen("./keytest").read().strip() #Check arrow keys
+        while input_state5 == True and input_state24 == True and keyinput != '2':
             input_state5 = GPIO.input(5)
             input_state24 = GPIO.input(24)
+            keyinput = os.popen("./keytest").read().strip() #Check arrow keys
             time.sleep(0.2)
         if input_state24 == False:
             print "Rebooting..."
             time.sleep(1)
             subprocess.call(['reboot'])
-        if input_state5 == False:
+        if input_state5 == False or keyinput == '2':
             print "Returning to menu..."
             time.sleep(1)
     if option == 5:
@@ -149,9 +153,11 @@ def run(option):
         print "TRIANGLE: Reboot"
         input_state5 = GPIO.input(5)
         input_state24 = GPIO.input(24)
-        while input_state5 == True and input_state24 == True:
+        keyinput = os.popen("./keytest").read().strip() #Check arrow keys
+        while input_state5 == True and input_state24 == True and keyinput != '2':
             input_state5 = GPIO.input(5)
             input_state24 = GPIO.input(24)
+            keyinput = os.popen("./keytest").read().strip() #Check arrow keys
             time.sleep(0.2)
         if input_state24 == False:
             print "Rebooting..."
@@ -182,9 +188,11 @@ def run(option):
       print "X: Enable at reboot"
       input_state5 = GPIO.input(5)   #X
       input_state24 = GPIO.input(24) #Triangle
-      while input_state5 == True and input_state24 == True:
+      keyinput = os.popen("./keytest").read().strip() #Check arrow keys
+      while input_state5 == True and input_state24 == True and keyinput != '2':
           input_state5 = GPIO.input(5)
           input_state24 = GPIO.input(24)
+          keyinput = os.popen("./keytest").read().strip() #Check arrow keys
           time.sleep(0.2)
       if input_state24 == False:
           print "Enabling now..."
@@ -193,7 +201,7 @@ def run(option):
           os.popen('systemctl restart networking').read().strip()
           os.popen('iwconfig wlan0 mode managed').read().strip()
           os.popen('iwconfig wlan0 power on').read().strip()
-      if input_state5 == False:
+      if input_state5 == False or keyinput == '2':
           print "Enabling next reboot"
           time.sleep(3)
       status = "nw=NOR"
@@ -218,9 +226,11 @@ def run(option):
         print "X: Enable at reboot"
         input_state5 = GPIO.input(5)   #X
         input_state24 = GPIO.input(24) #Triangle
-        while input_state5 == True and input_state24 == True:
+        keyinput = os.popen("./keytest").read().strip() #Check arrow keys
+        while input_state5 == True and input_state24 == True and keyinput != '2':
             input_state5 = GPIO.input(5)
             input_state24 = GPIO.input(24)
+            keyinput = os.popen("./keytest").read().strip() #Check arrow keys
             time.sleep(0.2)
         if input_state24 == False:
             print "Enabling now..."
@@ -239,13 +249,15 @@ def run(option):
     	time.sleep(0.5)
         input_state5 = GPIO.input(5)
     	input_state24 = GPIO.input(24)
-        while input_state5 == True and input_state24 == True:
+        keyinput = os.popen("./keytest").read().strip() #Check arrow keys
+        while input_state5 == True and input_state24 == True and keyinput != '2':
             input_state5 = GPIO.input(5)
             input_state24 = GPIO.input(24)
+            keyinput = os.popen("./keytest").read().strip() #Check arrow keys
             time.sleep(0.2)
     	if input_state24 == False:
     		main()
-    	if input_state5 == False:
+    	if input_state5 == False or keyinput == '2':
             status = "network=NOR"
             if chkstatus(status) == 0: #If its not in normal mode
                 os.popen('cp /etc/network/NORMinterfaces /etc/network/interfaces').read().strip()
@@ -267,9 +279,11 @@ def run(option):
             time.sleep(0.5)
             input_state5 = GPIO.input(5)
             input_state24 = GPIO.input(24)
-            while input_state5 == True and input_state24 == True:
+            keyinput = os.popen("./keytest").read().strip() #Check arrow keys
+            while input_state5 == True and input_state24 == True and keyinput != '2':
                 input_state5 = GPIO.input(5)
                 input_state24 = GPIO.input(24)
+                keyinput = os.popen("./keytest").read().strip() #Check arrow keys
                 time.sleep(0.2)
             if input_state24 == False:
                 status = "nw=HOT"
@@ -300,29 +314,35 @@ def run(option):
     	input_state5 = GPIO.input(5)   #X
         input_state24 = GPIO.input(24) #Triangle
     	input_state22 = GPIO.input(22) #Square
-        while input_state5 == True and input_state24 == True and input_state22 == True:
+        keyinput = os.popen("./keytest").read().strip() #Check arrow keys
+        while input_state5 == True and input_state24 == True and input_state22 == True and keyinput != '2':
             input_state5 = GPIO.input(5)
             input_state24 = GPIO.input(24)
     	    input_state22 = GPIO.input(22)
+            keyinput = os.popen("./keytest").read().strip() #Check arrow keys
             time.sleep(0.2)
     	if input_state22 == False:
     		main()
-    	if input_state5 == False: #X
+    	if input_state5 == False or keyinput == '2': #X
             os.popen('clear').read().strip()
             print "Use this to connect: ssh -X -l root -p 5555 localhost"
             print "---Press X to start---"
     	    time.sleep(0.5)
             input_state5 = GPIO.input(5)
-    	    while input_state5 == True:
+            keyinput = os.popen("./keytest").read().strip() #Check arrow keys
+    	    while input_state5 == True and keyinput != '2':
                     input_state5 = GPIO.input(5)
+                    keyinput = os.popen("./keytest").read().strip() #Check arrow keys
                     time.sleep(0.2)
     	    print "Tunneling..."
             print "Command returns: %s" %os.popen('ssh -N -R 8888:localhost:%s %s@%s -p %s &' %(piPORT, sshUSER, sshIP, sshPORT)).read().strip()
             print "---Press X for menu---"
             time.sleep(0.5)
             input_state5 = GPIO.input(5)
-            while input_state5 == True:
+            keyinput = os.popen("./keytest").read().strip() #Check arrow keys
+            while input_state5 == True and keyinput != '2':
                 input_state5 = GPIO.input(5)
+                keyinput = os.popen("./keytest").read().strip() #Check arrow keys
                 time.sleep(0.2)
         if input_state24 == False: #Triangle
     	    user = raw_input("Username: ")
@@ -333,16 +353,20 @@ def run(option):
             print "---Press X to start---"
             time.sleep(0.5)
             input_state5 = GPIO.input(5)
-            while input_state5 == True:
+            keyinput = os.popen("./keytest").read().strip() #Check arrow keys
+            while input_state5 == True and keyinput != '2':
                 input_state5 = GPIO.input(5)
+                keyinput = os.popen("./keytest").read().strip() #Check arrow keys
                 time.sleep(0.2)
     	    print "Tunneling..."
     	    print "Command returns: %s" %os.popen('ssh -N -R 5555:localhost:%s %s@%s -p %s'%(piPORT, user,ip,port)).read().strip()
     	    print "---Press X for menu---"
             time.sleep(0.5)
             input_state5 = GPIO.input(5)
-            while input_state5 == True:
+            keyinput = os.popen("./keytest").read().strip() #Check arrow keys
+            while input_state5 == True and keyinput != '2':
                 input_state5 = GPIO.input(5)
+                keyinput = os.popen("./keytest").read().strip() #Check arrow keys
                 time.sleep(0.2)
     if option == 15:
     	print "Restarting..."
