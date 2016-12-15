@@ -5,7 +5,7 @@ Created for use with the [Uniker RS-002 6-button case](https://www.amazon.com/Un
 
 
 
-For the menu script, use the arrow keys to navigate up and down the menu. The X button selects the current option and any further functions of the buttons are displayed on the screen.
+For the menu script, use the arrow keys (keyboard or on the case) to navigate up and down the menu. The X button (or right arrow on keyboard) selects the current option and any further functions of the buttons are displayed on the screen.
 
 For the button scripts, the "button.py" file checks if you're running in CLI or GUI mode and then executes the correct script. These can be customized. 
 
