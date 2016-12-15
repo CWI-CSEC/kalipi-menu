@@ -65,7 +65,7 @@ def main():
         GPIO.output(27,GPIO.HIGH)
     input_state5 = GPIO.input(5) #Check X key
     keyinput = os.popen("./keytest").read().strip() #Check arrow keys
-    while input_state5 == True or keyinput == '2':             #Do this until the X button is pressed or KEY_RIGHT_ARROW
+    while input_state5 == True and keyinput != '2':             #Do this until the X button is pressed or KEY_RIGHT_ARROW
        input_state17 = GPIO.input(17)
        input_state4 = GPIO.input(4)
        input_state5 = GPIO.input(5)
