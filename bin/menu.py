@@ -30,6 +30,8 @@ abspath = os.path.abspath(__file__) #Makes the script find where its located so 
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
+os.popen('chmod +x keytest').read().strip() #Set the permissions on the keyboard check file
+
 global sshUSER
 global sshIP
 global sshPORT
@@ -133,12 +135,12 @@ def run(option):
         input_state5 = GPIO.input(5)
         input_state24 = GPIO.input(24)
         keyinput = os.popen("./keytest").read().strip() #Check arrow keys
-        while input_state5 == True and input_state24 == True and keyinput != '2':
+        while input_state5 == True and input_state24 == True and keyinput != '2' and keyinput != '3':
             input_state5 = GPIO.input(5)
             input_state24 = GPIO.input(24)
             keyinput = os.popen("./keytest").read().strip() #Check arrow keys
             time.sleep(0.2)
-        if input_state24 == False:
+        if input_state24 == False or keyinput == '3':
             print "Rebooting..."
             time.sleep(1)
             subprocess.call(['reboot'])
@@ -154,16 +156,17 @@ def run(option):
         input_state5 = GPIO.input(5)
         input_state24 = GPIO.input(24)
         keyinput = os.popen("./keytest").read().strip() #Check arrow keys
-        while input_state5 == True and input_state24 == True and keyinput != '2':
+        while input_state5 == True and input_state24 == True and keyinput != '2' and keyinput != '3':
             input_state5 = GPIO.input(5)
             input_state24 = GPIO.input(24)
             keyinput = os.popen("./keytest").read().strip() #Check arrow keys
+            keyinput = os.popen("./keytest").read().strip() #Check arrow keys
             time.sleep(0.2)
-        if input_state24 == False:
+        if input_state24 == False or keyinput == '3':
             print "Rebooting..."
             time.sleep(1)
             subprocess.call(['reboot'])
-        if input_state5 == False:
+        if input_state5 == False or keyinptu == '2':
             print "Returning to menu..."
             time.sleep(1)
     if option == 6:
@@ -189,12 +192,12 @@ def run(option):
       input_state5 = GPIO.input(5)   #X
       input_state24 = GPIO.input(24) #Triangle
       keyinput = os.popen("./keytest").read().strip() #Check arrow keys
-      while input_state5 == True and input_state24 == True and keyinput != '2':
+      while input_state5 == True and input_state24 == True and keyinput != '2' and keyinput != '3':
           input_state5 = GPIO.input(5)
           input_state24 = GPIO.input(24)
           keyinput = os.popen("./keytest").read().strip() #Check arrow keys
           time.sleep(0.2)
-      if input_state24 == False:
+      if input_state24 == False or keyinput == '3':
           print "Enabling now..."
           os.popen('systemctl stop dnsmasq').read().strip()
           os.popen('systemctl stop hostapd').read().strip()
@@ -227,16 +230,16 @@ def run(option):
         input_state5 = GPIO.input(5)   #X
         input_state24 = GPIO.input(24) #Triangle
         keyinput = os.popen("./keytest").read().strip() #Check arrow keys
-        while input_state5 == True and input_state24 == True and keyinput != '2':
+        while input_state5 == True and input_state24 == True and keyinput != '2' and keyinput != '3':
             input_state5 = GPIO.input(5)
             input_state24 = GPIO.input(24)
             keyinput = os.popen("./keytest").read().strip() #Check arrow keys
             time.sleep(0.2)
-        if input_state24 == False:
+        if input_state24 == False or keyinput == '3':
             print "Enabling now..."
             os.popen('systemctl restart networking').read().strip()
     	    os.popen('systemctl start hostapd').read().strip()
-    	if input_state5 == False:
+    	if input_state5 == False or keyinput == '2':
             print "Enabling next reboot"
             time.sleep(3)
         status = "nw=BRI"
@@ -250,12 +253,12 @@ def run(option):
         input_state5 = GPIO.input(5)
     	input_state24 = GPIO.input(24)
         keyinput = os.popen("./keytest").read().strip() #Check arrow keys
-        while input_state5 == True and input_state24 == True and keyinput != '2':
+        while input_state5 == True and input_state24 == True and keyinput != '2' and keyinput != '3':
             input_state5 = GPIO.input(5)
             input_state24 = GPIO.input(24)
             keyinput = os.popen("./keytest").read().strip() #Check arrow keys
             time.sleep(0.2)
-    	if input_state24 == False:
+    	if input_state24 == False or keyinput == '3':
     		main()
     	if input_state5 == False or keyinput == '2':
             status = "network=NOR"
@@ -280,16 +283,16 @@ def run(option):
             input_state5 = GPIO.input(5)
             input_state24 = GPIO.input(24)
             keyinput = os.popen("./keytest").read().strip() #Check arrow keys
-            while input_state5 == True and input_state24 == True and keyinput != '2':
+            while input_state5 == True and input_state24 == True and keyinput != '2' and keyinput != '3':
                 input_state5 = GPIO.input(5)
                 input_state24 = GPIO.input(24)
                 keyinput = os.popen("./keytest").read().strip() #Check arrow keys
                 time.sleep(0.2)
-            if input_state24 == False:
+            if input_state24 == False or keyinput == '3':
                 status = "nw=HOT"
                 upstatus(status)
                 main()
-            if input_state5 == False:
+            if input_state5 == False or keyinput == '2':
            	print "Enabling..."
                 os.popen('systemctl enable hostapd').read().strip()
                 os.popen('systemctl enable dnsmasq').read().strip()
@@ -315,13 +318,13 @@ def run(option):
         input_state24 = GPIO.input(24) #Triangle
     	input_state22 = GPIO.input(22) #Square
         keyinput = os.popen("./keytest").read().strip() #Check arrow keys
-        while input_state5 == True and input_state24 == True and input_state22 == True and keyinput != '2':
+        while input_state5 == True and input_state24 == True and input_state22 == True and keyinput != '2' and keyinput != '3':
             input_state5 = GPIO.input(5)
             input_state24 = GPIO.input(24)
     	    input_state22 = GPIO.input(22)
             keyinput = os.popen("./keytest").read().strip() #Check arrow keys
             time.sleep(0.2)
-    	if input_state22 == False:
+    	if input_state22 == False or keyinput == '3':
     		main()
     	if input_state5 == False or keyinput == '2': #X
             os.popen('clear').read().strip()
@@ -344,7 +347,7 @@ def run(option):
                 input_state5 = GPIO.input(5)
                 keyinput = os.popen("./keytest").read().strip() #Check arrow keys
                 time.sleep(0.2)
-        if input_state24 == False: #Triangle
+        if input_state24 == False or keyinput == '3': #Triangle
     	    user = raw_input("Username: ")
     	    ip = raw_input("External IP: ")
     	    port = raw_input("External Port:  ")
