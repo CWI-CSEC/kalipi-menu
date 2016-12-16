@@ -27,3 +27,8 @@ To install:
 `chmod +x install`
 
 `./install`
+
+
+
+KNOWN BUGS:
+The hotspot option doesn't work unless you enable it at startup and then reboot (to turn off, set network to defaults and restart). Working on a fix, but this may take a little time
