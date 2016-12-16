@@ -9,6 +9,6 @@ case "$a" in
   A)  keyinput=0;; #UP
   B)  keyinput=1;; #DOWN
   C)  keyinput=2;; #RIGHT
-  *)  exit
+  D)  keyinput=3;; #LEFT
 esac
 echo $keyinput
