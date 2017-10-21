@@ -20,7 +20,7 @@ To install:
 
 `cd bin`
 
-`git clone https://github.com/kforney/kalipi-menu`
+`git clone https://github.com/CWI-ISDF/kalipi-menu`
 
 `cd kalipi-menu/bin`
 
