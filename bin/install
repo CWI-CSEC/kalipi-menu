@@ -12,9 +12,21 @@ if [[ $choice =~ ^[Nn]$ ]]; then
   sleep 5
   mount /dev/mmcblk0p1 /boot
   cd /usr/local/src
-  wget  -O re4son_kali-pi-tft_kernel_current.tar.xz https://whitedome.com.au/re4son/downloads/10452/
-  tar -xJf re4son_kali-pi-tft_kernel_current.tar.xz
-  cd re4son_kali-pi-tft_kernel_4*
+  wget  -O re4son_kali-pi-tft_kernel_current.tar.xz https://whitedome.com.au/re4son/downloads/11299/
+  check=$(sha256sum re4son_kali-pi-tft_kernel_current.tar.xz | cut -d' ' -f1)
+   if [ $check = "e7204e9fceffc8e9a99a84e6b0f84c8c9847e508346240c5e8e756d70e6b90af" ]; then
+	echo "Checksum confirmed for Re4son kernel, 2017.10.31."
+	echo "Proceeding."
+   else
+	echo "CHECKSUM ERROR."
+	echo "Please check your network connection and try again."
+	echo "Alternatively, try installing Re4son manually."
+	echo "A guide can be found at http://whitedome.com.au/re4son/sticky-fingers-kali-pi/"
+	echo "This script will now terminate."
+	exit 1
+   fi
+  tar xvf re4son_kali-pi-tft_kernel_current.tar.xz
+  cd re4son-kernel_4*
   chmod +x install.sh
   ./install.sh
   ./re4son-pi-tft-setup -d
@@ -37,7 +49,7 @@ apt-get -y install dnsmasq
 echo "-------------"
 echo "[Step 3/8]"
 echo "-------------"
-apt-get -y install python-dev
+apt-get -y install python-dev python-pip
 echo "-------------"
 echo "[Step 4/8]"
 echo "-------------"
@@ -60,6 +72,7 @@ echo "[Step 8/8]"
 echo "-------------"
 cd RPi.GPIO-0.5.11/
 python setup.py install
+easy_install uinput
 echo "Starting setup for menu:"
 cd ..
 rm -rf RPi.GPIO-0.5.11.tar.gz #Delete the zipped package
