@@ -29,7 +29,7 @@ if [[ $choice =~ ^[Nn]$ ]]; then
   cd re4son-kernel_4*
   chmod +x install.sh
   ./install.sh
-  ./re4son-pi-tft-setup -d
+  ./re4son-pi-tft-setup -t 22 -d /root
   ./re4son-pi-tft-setup -t 22 -u /root
   echo "The Re4son install is complete"
   echo "After the reboot, start the installer again"
