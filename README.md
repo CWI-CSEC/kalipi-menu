@@ -16,8 +16,6 @@ The menu itself can be found in "menu.py", and customized to your liking.
 
 `git clone https://github.com/CWI-ISDF/kalipi-menu`
 
-`cd kalipi-menu/bin`
-
-`chmod +x install`
+`cd kalipi-menu`
 
 `./install`
