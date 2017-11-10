@@ -1,3 +1,0 @@
-backlight=1
-network=NOR
-ssh=0
