@@ -18,4 +18,4 @@ The menu itself can be found in "menu.py", and customized to your liking.
 
 `cd kalipi-menu`
 
-`./install`
+`./install.sh`
