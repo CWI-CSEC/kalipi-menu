@@ -1,13 +1,19 @@
 #!/bin/bash
 
 clear
+if [ -x "$(command -v curl)" ]; then
+  :
+else
+  apt-get install curl
+fi
+clear
 echo "Starting install..."
-echo -n "Do you already have Re4son for your Pi? Y/N   "
+echo -n "Do you already have the Re4son kernel installed on your Pi? Y/N   "
 read choice
 if [[ $choice =~ ^[Nn]$ ]]; then
   echo "Installing Re4son"
   echo "NOTE: You will have to reboot and run this installer again"
-  echo "NOTE: DO NOT REBOOT WHEN PROMPTED OR YOU WILL HAVE TO REPEAT IT"
+  echo "NOTE: DO NOT REBOOT WHEN PROMPTED THE FIRST TIME OR YOU WILL HAVE TO REPEAT IT"
   echo "NOTE: THE SYSTEM WILL REBOOT ON ITS OWN"
   sleep 5
   mount /dev/mmcblk0p1 /boot
