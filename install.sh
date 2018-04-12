@@ -19,10 +19,11 @@ if [[ $choice =~ ^[Nn]$ ]]; then
   mount /dev/mmcblk0p1 /boot
   cd /usr/local/src
   wget  -O re4son_kali-pi-tft_kernel_current.tar.xz https://whitedome.com.au/re4son/downloads/11299/
-  check=$(sha256sum re4son_kali-pi-tft_kernel_current.tar.xz | cut -d' ' -f1)
-   if [ $check = "e7204e9fceffc8e9a99a84e6b0f84c8c9847e508346240c5e8e756d70e6b90af" ]; then
-	echo "Checksum confirmed for Re4son kernel, 2017.10.31."
-	echo "Proceeding."
+  propersum=$(curl http://whitedome.com.au/re4son/re4son-kernel/ --output - | grep sha256 | cut -c 43-106 | sed -n '1p')
+  actualsum=$(sha256sum re4son_kali-pi-tft_kernel_current.tar.xz | cut -d' ' -f1)
+   if [ $actualsum = $propersum ]; then
+	echo "Checksum confirmed for latest Re4son kernel."
+	echo "Proceeding with installation."
    else
 	echo "CHECKSUM ERROR."
 	echo "Please check your network connection and try again."
